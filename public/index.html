@@ -13,6 +13,16 @@
     </div>
     
     <div class="game-container" id="gameContainer" style="display: none;">
+        <div class="control-instructions" id="controlInstructions">
+            <div class="instructions-content">
+                <p>← → : 左右移動</p>
+                <p>↓ : 高速落下</p>
+                <p>↑ : 回転</p>
+                <p>スペース : 一気に落下</p>
+                <p>C : ホールド</p>
+                <p>P : ポーズ</p>
+            </div>
+        </div>
         <canvas id="gameBoard" class="game-board" width="450" height="900"></canvas>
         <div class="info-panel">
             <div class="score-box">
@@ -64,17 +74,6 @@
         <h2>ゲームオーバー</h2>
         <p>消去ライン: <span id="finalLines">0</span></p>
         <button class="title-btn" onclick="returnToTitle()">タイトルへ戻る</button>
-    </div>
-
-    <div class="control-instructions" id="controlInstructions">
-        <div class="instructions-content">
-            <p>← → : 左右移動</p>
-            <p>↓ : 高速落下</p>
-            <p>↑ : 回転</p>
-            <p>スペース : 一気に落下</p>
-            <p>C : ホールド</p>
-            <p>P : ポーズ</p>
-        </div>
     </div>
 
     <script src="assets/js/script.js"></script>
