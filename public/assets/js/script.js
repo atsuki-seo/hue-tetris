@@ -242,7 +242,7 @@ function clearLines() {
         playLineClearSound();
         lines += linesCleared;
         // 1行消去ごとに落下速度を速くする（最速値の設定もする）
-        dropInterval = Math.max(50, 1000 - lines * 200);
+        dropInterval = Math.max(150, 1000 - lines * 200);
         updateUI();
     }
 }
