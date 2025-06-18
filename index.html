@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ヒューさんのテトリス</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <h1>ヒューさんのテトリス</h1>
+        <button class="start-btn" onclick="startGame()">ゲーム開始</button>
+    </div>
+    
+    <div class="game-container" id="gameContainer" style="display: none;">
+        <canvas id="gameBoard" class="game-board" width="450" height="900"></canvas>
+        <div class="info-panel">
+            <div class="score-box">
+                <h3>ゲーム情報</h3>
+                <div class="score-item">
+                    <span>ライン:</span>
+                    <span id="lines">0</span>
+                </div>
+            </div>
+            
+            <div class="next-box">
+                <h3>次のピース</h3>
+                <canvas id="nextPiece" class="next-piece" width="120" height="80"></canvas>
+            </div>
+            
+            <div class="next-box">
+                <h3>ホールド</h3>
+                <canvas id="holdPiece" class="next-piece" width="120" height="80"></canvas>
+            </div>
+            
+            <div class="controls-box">
+                <h3>コントローラー</h3>
+                <div class="touch-controls">
+                    <div class="control-row">
+                        <button class="touch-btn move-btn" ontouchstart="handleTouch('left', event)" ontouchend="stopTouch()" onmousedown="handleTouch('left', event)" onmouseup="stopTouch()">←</button>
+                        <button class="touch-btn move-btn" ontouchstart="handleTouch('down', event)" ontouchend="stopTouch()" onmousedown="handleTouch('down', event)" onmouseup="stopTouch()">↓</button>
+                        <button class="touch-btn move-btn" ontouchstart="handleTouch('right', event)" ontouchend="stopTouch()" onmousedown="handleTouch('right', event)" onmouseup="stopTouch()">→</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="touch-btn action-btn" ontouchstart="handleTouch('drop', event)" onmousedown="handleTouch('drop', event)">⇩</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="touch-btn action-btn" ontouchstart="handleTouch('rotate', event)" onmousedown="handleTouch('rotate', event)">⟲</button>
+                        <button class="touch-btn action-btn" ontouchstart="handleTouch('hold', event)" onmousedown="handleTouch('hold', event)">H</button>
+                    </div>
+                </div>
+                <button class="pause-btn" onclick="pauseGame()">ポーズ</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pause-screen" id="pauseScreen">
+        <h2>ポーズ中</h2>
+        <button class="resume-btn" onclick="resumeGame()">再開する</button>
+        <button class="title-btn" onclick="returnToTitle()">タイトルへ戻る</button>
+    </div>
+
+    <div class="game-over" id="gameOver">
+        <h2>ゲームオーバー</h2>
+        <p>消去ライン: <span id="finalLines">0</span></p>
+        <button class="title-btn" onclick="returnToTitle()">タイトルへ戻る</button>
+    </div>
+
+    <div class="control-instructions" id="controlInstructions">
+        <div class="instructions-content">
+            <p>← → : 左右移動</p>
+            <p>↓ : 高速落下</p>
+            <p>↑ : 回転</p>
+            <p>スペース : 一気に落下</p>
+            <p>C : ホールド</p>
+            <p>P : ポーズ</p>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

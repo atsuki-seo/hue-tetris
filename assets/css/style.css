@@ -1,0 +1,945 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    overflow: auto;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.game-container {
+    display: flex;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    width: calc(100vw - 16px);
+    height: calc(100vh - 16px);
+    max-width: none;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+.game-board {
+    border: 3px solid #fff;
+    border-radius: 10px;
+    background: #000;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 160px;
+    max-width: 200px;
+    flex: 0 0 auto;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.score-box, .next-box, .controls-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+
+.score-box h3, .next-box h3, .controls-box h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+}
+
+.score-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.next-piece {
+    width: 80px;
+    height: 50px;
+    background: #000;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* タッチ操作用ボタン */
+.touch-controls {
+    display: none;
+}
+
+.control-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0;
+}
+
+.touch-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+}
+
+.touch-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.move-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+}
+
+.game-over {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid #fff;
+    display: none;
+    max-width: 95%;
+    min-width: 320px;
+    width: auto;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+}
+
+.restart-btn, .game-over .title-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0;
+    transition: transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    width: 200px;
+    height: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.restart-btn:hover, .game-over .title-btn:hover {
+    transform: scale(1.05);
+}
+
+.pause-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid #fff;
+    display: none;
+    max-width: 95%;
+    min-width: 320px;
+    width: auto;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+}
+
+.pause-btn, .resume-btn, .retry-btn, .title-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    margin: 8px 0;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.control-instructions {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: none;
+    z-index: 1000;
+}
+
+.instructions-content {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.instructions-content p {
+    margin: 0;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.pause-btn:active, .resume-btn:active, .retry-btn:active, .title-btn:active {
+    transform: none;
+}
+
+.start-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid #fff;
+    max-width: 90%;
+    min-width: 300px;
+    box-sizing: border-box;
+}
+
+.start-screen h1 {
+    font-size: 3rem;
+    margin: 0 0 40px 0;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.start-screen p {
+    display: none;
+}
+
+.start-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 18px 40px;
+    border-radius: 25px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 0;
+    transition: transform 0.2s;
+    min-width: 200px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.start-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* デスクトップ対応 */
+@media (min-width: 769px) {
+    .game-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
+        max-width: none;
+    }
+    
+    .game-board {
+        flex: 0 0 auto;
+        order: 1;
+    }
+    
+    .info-panel {
+        min-width: 280px;
+        max-width: 320px;
+        height: 100%;
+        flex: 0 0 auto;
+        order: 2;
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .score-box h3, .next-box h3, .controls-box h3 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    
+    .score-item {
+        font-size: 20px;
+        margin: 8px 0;
+    }
+    
+    .next-piece {
+        width: 140px;
+        height: 90px;
+    }
+    
+    .controls-box p {
+        font-size: 18px;
+        margin: 6px 0;
+    }
+    
+    .touch-controls {
+        display: block !important;
+    }
+    
+    .touch-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        margin: 4px;
+    }
+    
+    .move-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .action-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 18px;
+    }
+    
+    .pause-btn {
+        font-size: 20px;
+        padding: 15px 25px;
+    }
+    
+    .start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        min-width: none;
+        transform: none;
+        padding: 15vh 5vw;
+        border-radius: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .start-screen h1 {
+        font-size: 3.5rem;
+        margin-bottom: 40px;
+        background: linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+    }
+    
+    .start-btn {
+        font-size: 20px;
+        padding: 18px 40px;
+        margin-top: 0;
+        min-width: 200px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .start-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+    
+}
+
+/* タブレット対応 (481px-768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .game-container {
+        flex-direction: row;
+        align-items: center;
+        padding: 8px;
+        gap: 8px;
+        justify-content: center;
+        width: calc(100vw - 16px);
+        height: calc(100vh - 16px);
+    }
+    
+    .game-board {
+        order: 1;
+        flex: 0 0 auto;
+    }
+    
+    .info-panel {
+        flex-direction: column;
+        gap: 4px;
+        min-width: 220px;
+        max-width: 260px;
+        order: 2;
+        height: 100%;
+        overflow-y: auto;
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .game-board {
+        order: 1;
+        flex: 0 0 auto;
+    }
+    
+    .score-box, .next-box, .controls-box {
+        flex: none;
+        min-width: auto;
+        margin: 0 0 10px 0;
+        padding: 12px;
+    }
+    
+    .score-box h3, .next-box h3, .controls-box h3 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+    
+    .score-item {
+        font-size: 16px;
+        margin: 6px 0;
+    }
+    
+    .next-piece {
+        width: 100px;
+        height: 65px;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .controls-box p {
+        font-size: 16px;
+        margin: 5px 0;
+        display: none;
+    }
+    
+    .touch-controls {
+        display: block !important;
+    }
+    
+    .control-row {
+        display: flex !important;
+        gap: 6px;
+        margin: 6px 0;
+    }
+    
+    .touch-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+        margin: 3px;
+        display: flex !important;
+    }
+    
+    .move-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+    
+    .action-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 16px;
+    }
+    
+    .pause-btn {
+        font-size: 18px;
+        padding: 12px;
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        min-width: none;
+        transform: none;
+        padding: 15vh 5vw;
+        border-radius: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .start-screen h1 {
+        font-size: 3rem;
+        margin-bottom: 40px;
+        background: linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+    }
+    
+    .start-btn {
+        font-size: 18px;
+        padding: 16px 35px;
+        min-width: 180px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        margin-top: 0;
+    }
+    
+    .start-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+}
+
+/* スマートフォン対応 (480px以下) - フルスクリーン */
+@media (max-width: 480px) {
+    .game-container {
+        flex-direction: row;
+        align-items: center;
+        padding: 4px;
+        gap: 4px;
+        justify-content: space-between;
+        width: calc(100vw - 8px);
+        height: calc(100vh - 8px);
+        max-width: 100vw;
+        overflow: hidden;
+    }
+    
+    .game-board {
+        order: 1;
+        flex: 1 1 auto;
+        max-width: calc(100vw - 110px);
+    }
+    
+    .info-panel {
+        flex-direction: column;
+        gap: 3px;
+        min-width: 90px;
+        max-width: 100px;
+        width: 100px;
+        order: 2;
+        height: 100%;
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+        flex: 0 0 100px;
+    }
+    
+    .game-board {
+        width: min(35vh, 250px) !important;
+        height: min(70vh, 500px) !important;
+        order: 1;
+    }
+    
+    .score-box, .next-box, .controls-box {
+        flex: none;
+        min-width: auto;
+        margin: 0 0 5px 0;
+        padding: 5px;
+    }
+    
+    .score-box h3, .next-box h3, .controls-box h3 {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+    
+    .score-item {
+        font-size: 10px;
+        margin: 2px 0;
+    }
+    
+    .next-piece {
+        width: 70px;
+        height: 45px;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .controls-box p {
+        font-size: 8px;
+        margin: 1px 0;
+        display: none;
+    }
+    
+    .touch-controls {
+        display: block !important;
+        visibility: visible !important;
+    }
+    
+    .control-row {
+        display: flex !important;
+        gap: 2px;
+        margin: 2px 0;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .touch-btn {
+        display: flex !important;
+        width: 20px;
+        height: 20px;
+        font-size: 7px;
+        margin: 1px;
+        border-radius: 4px;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .move-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+    
+    .action-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 7px;
+    }
+    
+    .pause-btn {
+        font-size: 9px;
+        padding: 5px;
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        min-width: none;
+        transform: none;
+        padding: 15vh 5vw;
+        border-radius: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .start-screen h1 {
+        font-size: 3.5rem;
+        margin-bottom: 40px;
+        background: linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+    }
+    
+    .start-btn {
+        font-size: 20px;
+        padding: 18px 40px;
+        margin-top: 0;
+        min-width: 200px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .start-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+}
+
+/* 小さなスマートフォン対応 (360px以下) */
+@media (max-width: 360px) {
+    .game-container {
+        padding: 5px;
+        gap: 6px;
+    }
+    
+    .info-panel {
+        gap: 5px;
+        min-width: 85px;
+        max-width: 85px;
+        order: 2;
+    }
+    
+    .game-board {
+        width: 280px !important;
+        height: 560px !important;
+        order: 1;
+    }
+    
+    .score-box, .next-box, .controls-box {
+        padding: 5px;
+        margin: 0 0 5px 0;
+    }
+    
+    .score-box h3, .next-box h3, .controls-box h3 {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    
+    .score-item {
+        font-size: 9px;
+        margin: 2px 0;
+    }
+    
+    .next-piece {
+        width: 60px;
+        height: 40px;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .controls-box p {
+        font-size: 7px;
+        margin: 1px 0;
+        display: none;
+    }
+    
+    .touch-controls {
+        display: block !important;
+    }
+    
+    .control-row {
+        gap: 2px;
+        margin: 2px 0;
+        display: flex !important;
+    }
+    
+    .touch-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 7px;
+        margin: 1px;
+        border-radius: 4px;
+        display: flex !important;
+    }
+    
+    .move-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+    
+    .action-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 7px;
+    }
+    
+    .pause-btn {
+        font-size: 7px;
+        padding: 3px;
+        width: 100%;
+        margin: 3px 0;
+    }
+    
+    .start-screen {
+        padding: 12vh 4vw;
+    }
+    
+    .start-screen h1 {
+        font-size: 3rem;
+        margin-bottom: 35px;
+    }
+    
+    .start-btn {
+        font-size: 18px;
+        padding: 16px 35px;
+        min-width: 180px;
+    }
+}
+
+/* 横向きスマートフォン対応 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .game-container {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 5px;
+        gap: 6px;
+    }
+    
+    .info-panel {
+        flex-direction: column;
+        gap: 4px;
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+        order: 2;
+    }
+    
+    .game-board {
+        width: 220px !important;
+        height: 350px !important;
+        order: 1;
+    }
+    
+    .score-box, .next-box, .controls-box {
+        min-width: auto;
+        margin: 0 0 4px 0;
+        padding: 4px;
+    }
+}
+
+/* 非常に小さな画面対応 */
+@media (max-width: 320px) {
+    .game-container {
+        padding: 4px;
+        gap: 5px;
+    }
+    
+    .info-panel {
+        gap: 4px;
+        min-width: 75px;
+        max-width: 75px;
+        order: 2;
+    }
+    
+    .game-board {
+        width: 240px !important;
+        height: 480px !important;
+        order: 1;
+    }
+    
+    .score-box, .next-box, .controls-box {
+        padding: 4px;
+        margin: 0 0 4px 0;
+    }
+    
+    .score-box h3, .next-box h3, .controls-box h3 {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .score-item {
+        font-size: 8px;
+        margin: 1px 0;
+    }
+    
+    .next-piece {
+        width: 50px;
+        height: 35px;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .controls-box p {
+        font-size: 6px;
+        margin: 1px 0;
+        display: none;
+    }
+    
+    .pause-btn {
+        font-size: 7px;
+        padding: 4px;
+        width: 100%;
+        margin: 4px 0;
+    }
+    
+    .start-screen {
+        padding: 12vh 4vw;
+    }
+    
+    .start-screen h1 {
+        font-size: 2.8rem;
+        margin-bottom: 35px;
+    }
+    
+    .start-btn {
+        font-size: 18px;
+        padding: 16px 35px;
+        min-width: 180px;
+    }
+}
