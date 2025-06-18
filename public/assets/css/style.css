@@ -232,7 +232,6 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: none;
-    z-index: 1000;
 }
 
 .instructions-content {
@@ -319,9 +318,6 @@ body {
     
     .control-instructions {
         position: static;
-        transform: none;
-        top: auto;
-        left: auto;
         background: rgba(0, 0, 0, 0.8);
         color: white;
         padding: 15px 20px;
@@ -329,7 +325,6 @@ body {
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         display: block;
-        z-index: auto;
         order: 1;
         flex: 0 0 auto;
         align-self: center;
@@ -373,7 +368,11 @@ body {
     }
     
     .touch-controls {
-        display: block !important;
+        display: none !important;
+    }
+    
+    .controls-box h3 {
+        display: none !important;
     }
     
     .touch-btn {

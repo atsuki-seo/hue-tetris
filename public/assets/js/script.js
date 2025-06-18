@@ -694,7 +694,14 @@ function pauseGame() {
     if (!gameRunning) return;
     gamePaused = true;
     document.getElementById('pauseScreen').style.display = 'block';
-    hideControlInstructions();
+    
+    // PC画面の場合は操作説明を表示したまま、それ以外は非表示
+    const screenWidth = window.innerWidth;
+    if (screenWidth >= 769) {
+        document.getElementById('controlInstructions').style.display = 'block';
+    } else {
+        hideControlInstructions();
+    }
 }
 
 function resumeGame() {
